@@ -70,6 +70,26 @@ where event_name in ('nav_logo', 'nav_apply', 'hero_apply', 'hero_program', 'app
   'program_costume', 'program_booth', 'program_stage')
 group by event_slug, event_name, coalesce(properties ->> 'label', event_name);
 
+-- Read-only aggregate endpoints for dashboard.html. No raw events or PII are returned.
+create or replace function public.get_event_funnel(p_event_slug text default 'pnu-halloween-2026')
+returns setof public.event_funnel
+language sql stable security definer set search_path = public
+as $$
+  select * from public.event_funnel where event_slug = p_event_slug;
+$$;
+
+create or replace function public.get_event_button_clicks(p_event_slug text default 'pnu-halloween-2026')
+returns setof public.event_button_clicks
+language sql stable security definer set search_path = public
+as $$
+  select * from public.event_button_clicks where event_slug = p_event_slug order by clicks desc;
+$$;
+
+revoke all on function public.get_event_funnel(text) from public;
+revoke all on function public.get_event_button_clicks(text) from public;
+grant execute on function public.get_event_funnel(text) to anon, authenticated;
+grant execute on function public.get_event_button_clicks(text) to anon, authenticated;
+
 -- Dashboard queries (run in SQL Editor, never from the public browser):
 -- select * from public.event_funnel where event_slug = 'pnu-halloween-2026';
 -- select * from public.event_button_clicks where event_slug = 'pnu-halloween-2026'
