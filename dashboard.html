@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="PNU Halloween 이벤트 그로스 대시보드" />
+    <title>PNU Halloween — Growth Dashboard</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="dashboard.css" />
+  </head>
+  <body class="dashboard-page">
+    <main class="dashboard-shell">
+      <header class="dashboard-header"><div><p class="section-label">PNU HALLOWEEN / GROWTH</p><h1>이벤트 성과<br /><em>한눈에 보기</em></h1></div><div class="dashboard-actions"><span id="last-updated">데이터를 불러오는 중…</span><button class="button primary" id="refresh-dashboard" type="button">새로고침 <span>↻</span></button></div></header>
+      <section class="metric-grid" aria-label="핵심 지표">
+        <article class="metric-card"><span>방문자</span><strong id="metric-visitors">—</strong><small>고유 세션</small></article>
+        <article class="metric-card"><span>신청 완료</span><strong id="metric-conversions">—</strong><small>전환 이벤트</small></article>
+        <article class="metric-card accent"><span>전환율</span><strong id="metric-conversion-rate">—</strong><small>방문자 대비</small></article>
+        <article class="metric-card"><span>CTA 클릭</span><strong id="metric-cta-clickers">—</strong><small>고유 클릭 세션</small></article>
+      </section>
+      <section class="dashboard-grid">
+        <article class="dashboard-card funnel-card"><div class="card-heading"><div><p class="section-label">FUNNEL</p><h2>어디서 이탈할까?</h2></div><span class="event-badge" id="event-name">pnu-halloween-2026</span></div><div id="funnel-list" class="funnel-list" aria-live="polite"><p class="loading">퍼널 데이터를 불러오는 중…</p></div></article>
+        <article class="dashboard-card"><div class="card-heading"><div><p class="section-label">BUTTON PERFORMANCE</p><h2>버튼별 클릭 수</h2></div></div><div class="table-wrap"><table><thead><tr><th>버튼</th><th>전체</th><th>고유</th><th>비중</th></tr></thead><tbody id="button-table"><tr><td colspan="4" class="loading">클릭 데이터를 불러오는 중…</td></tr></tbody></table></div></article>
+      </section>
+      <p class="dashboard-message" id="dashboard-message" role="status"></p><a class="back-link" href="./">← 이벤트 페이지로 돌아가기</a>
+    </main>
+    <script src="config.js"></script><script type="module" src="dashboard.js"></script>
+  </body>
+</html>
