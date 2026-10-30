@@ -1,0 +1,37 @@
+name: Deploy static site to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create public runtime configuration
+        env:
+          SUPABASE_URL: ${{ vars.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+          EVENT_SLUG: ${{ vars.EVENT_SLUG }}
+        run: |
+          node -e "const fs=require('fs'); const c={supabaseUrl:process.env.SUPABASE_URL,supabaseAnonKey:process.env.SUPABASE_ANON_KEY,eventSlug:process.env.EVENT_SLUG||'pnu-halloween-2026'}; if (!c.supabaseUrl || !c.supabaseAnonKey) throw new Error('Set SUPABASE_URL and SUPABASE_ANON_KEY before deployment.'); fs.writeFileSync('config.js', 'window.EVENT_CONFIG = ' + JSON.stringify(c, null, 2) + ';\\n');"
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+      - id: deployment
+        uses: actions/deploy-pages@v4
