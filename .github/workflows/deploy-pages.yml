@@ -28,7 +28,7 @@ jobs:
           SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
           EVENT_SLUG: ${{ vars.EVENT_SLUG }}
         run: |
-          node -e "const fs=require('fs'); const c={supabaseUrl:process.env.SUPABASE_URL,supabaseAnonKey:process.env.SUPABASE_ANON_KEY,eventSlug:process.env.EVENT_SLUG||'pnu-halloween-2026'}; if (!c.supabaseUrl || !c.supabaseAnonKey) throw new Error('Set SUPABASE_URL and SUPABASE_ANON_KEY before deployment.'); fs.writeFileSync('config.js', 'window.EVENT_CONFIG = ' + JSON.stringify(c, null, 2) + ';\\n');"
+          node -e "const fs=require('fs'); const c={eventSlug:process.env.EVENT_SLUG||'pnu-halloween-2026'}; if(process.env.SUPABASE_URL && process.env.SUPABASE_ANON_KEY) Object.assign(c,{supabaseUrl:process.env.SUPABASE_URL,supabaseAnonKey:process.env.SUPABASE_ANON_KEY}); fs.writeFileSync('config.js', 'window.EVENT_CONFIG = ' + JSON.stringify(c, null, 2) + ';\\n');"
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
